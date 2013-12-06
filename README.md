@@ -1,7 +1,7 @@
 # UNDERPY
 
 [![Build Status](https://travis-ci.org/ramonski/underpy.png)](https://travis-ci.org/ramonski/underpy)
-[![Coverage Status](https://raw.github.com/gittip/shields.io/master/static/coveralls/coveralls_100.png)](https://coveralls.io/r/ramonski/underpy?branch=master)
+[![Coverage Status](https://raw.github.com/gittip/shields.io/master/static/coveralls/coveralls_100.png)](https://coveralls.io/r/ramonski/underpy?branch=develop)
 
 ```
                      _
