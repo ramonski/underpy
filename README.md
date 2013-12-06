@@ -17,7 +17,7 @@ functional helpers for python
 
 ## Functions
 
-```
+``` python
 alias(col, mapping)
     Returns a collection of dictionaries with the keys renamed according to
     the mapping
