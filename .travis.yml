@@ -1,0 +1,10 @@
+language: python
+python:
+  - "2.7"
+install:
+    - "pip install coverage"
+    - "pip install coveralls"
+script:
+    - "coverage run --source=underpy setup.py nosetests --with-doctes"
+after_success:
+    coveralls

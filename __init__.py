@@ -3,7 +3,6 @@
 __author__ = 'Ramon Bartl <ramon.bartl@googlemail.com>'
 __docformat__ = 'plaintext'
 
-
 import types
 
 
@@ -18,119 +17,170 @@ def fail(error):
     raise RuntimeError(error)
 
 
-def isString(thing):
+def truthy(thing):
+    """ checks if a value is True or not None
+
+        >>> truthy(0)
+        True
+        >>> truthy({})
+        True
+        >>> truthy([])
+        True
+        >>> truthy(None)
+        False
+        >>> truthy(False)
+        False
+    """
+    if thing is False or thing is None:
+        return False
+    return True
+
+def falsy(thing):
+    """ checks if a value is False or None
+
+        >>> falsy(0)
+        False
+        >>> falsy({})
+        False
+        >>> falsy([])
+        False
+        >>> falsy(None)
+        True
+        >>> falsy(False)
+        True
+    """
+    return not truthy(thing)
+
+def is_string(thing):
     """ checks if an object is a string/unicode type
 
-        >>> isString("")
+        >>> is_string("")
         True
-        >>> isString(u"")
+        >>> is_string(u"")
         True
-        >>> isString(str())
+        >>> is_string(str())
         True
-        >>> isString(unicode())
+        >>> is_string(unicode())
         True
-        >>> isString(1)
+        >>> is_string(1)
         False
     """
     return type(thing) in types.StringTypes
 
-
-def isList(thing):
+def is_list(thing):
     """ checks if an object is a list type
 
-        >>> isList([])
+        >>> is_list([])
         True
-        >>> isList(list())
+        >>> is_list(list())
         True
-        >>> isList("[]")
+        >>> is_list("[]")
         False
-        >>> isList({})
+        >>> is_list({})
         False
     """
     return type(thing) is types.ListType
 
-
-def isTuple(thing):
+def is_tuple(thing):
     """ checks if an object is a tuple type
 
-        >>> isTuple(())
+        >>> is_tuple(())
         True
-        >>> isTuple(tuple())
+        >>> is_tuple(tuple())
         True
-        >>> isTuple("()")
+        >>> is_tuple("()")
         False
-        >>> isTuple([])
+        >>> is_tuple([])
         False
     """
     return type(thing) is types.TupleType
 
-
-def isDict(thing):
+def is_dict(thing):
     """ checks if an object is a dictionary type
 
-        >>> isDict({})
+        >>> is_dict({})
         True
-        >>> isDict(dict())
+        >>> is_dict(dict())
         True
-        >>> isDict("{}")
+        >>> is_dict("{}")
         False
-        >>> isDict([])
+        >>> is_dict([])
         False
     """
     return type(thing) is types.DictType
 
-
-def isDigit(thing):
+def is_digit(thing):
     """ checks if an object is a digit
 
-        >>> isDigit(1)
+        >>> is_digit(1)
         True
-        >>> isDigit("1")
+        >>> is_digit("1")
         True
-        >>> isDigit("a")
+        >>> is_digit("a")
         False
-        >>> isDigit([])
+        >>> is_digit([])
         False
     """
     return str(thing).isdigit()
 
-
-def toInt(thing):
+def to_int(thing):
     """ coverts an object to int
 
-        >>> toInt(1)
+        >>> to_int("0")
+        0
+        >>> to_int(1)
         1
-        >>> toInt("1")
+        >>> to_int("1")
         1
-        >>> toInt("a")
+        >>> to_int("a")
+
     """
-    return isDigit(thing) and int(thing) or None
+    if is_digit(thing): return int(thing)
+    return None
 
-
-def toString(thing):
+def to_string(thing):
     """ coverts an object to string
 
-        >>> toString(1)
+        >>> to_string(1)
         '1'
-        >>> toString([])
+        >>> to_string([])
         '[]'
-        >>> toString(u"a")
+        >>> to_string(u"a")
         'a'
     """
     return str(thing) or None
 
+def to_list(thing):
+    """ converts an object to a list
 
-def convert(value, converter, default=None):
+        >>> to_list(1)
+        [1]
+
+        >>> to_list([1,2,3])
+        [1, 2, 3]
+
+        >>> to_list(("a", "b", "c"))
+        ['a', 'b', 'c']
+
+        >>> to_list(dict(a=1, b=2))
+        [{'a': 1, 'b': 2}]
+    """
+    if not (is_list(thing) or is_tuple(thing)):
+        return [thing]
+    return list(thing)
+
+def convert(value, converter):
     """ Converts a value with a given converter function.
 
-        >>> convert("1", toInt)
+        >>> convert("1", to_int)
         1
-        >>> convert("a", toInt, 0)
+        >>> convert("0", to_int)
         0
+        >>> convert("a", to_int)
+
     """
     if not callable(converter): fail("Converter must be a function")
-    return converter(value) or default
-
+    return converter(value)
 
 def pluck(col, key, default=None):
     """ Extracts a list of values from a collection of dictionaries
@@ -141,18 +191,20 @@ def pluck(col, key, default=None):
         >>> pluck(stooges, "name")
         ['moe', 'larry', 'curly']
 
-        Also works with directly on a dictionary
+        It only works with collections
 
         >>> curly = stooges.pop()
         >>> pluck(curly, "age")
-        [60]
+        Traceback (most recent call last):
+        ...
+        RuntimeError: First argument must be a list or tuple
     """
-    if not isList(col): col = [col]
+    if not (is_list(col) or is_tuple(col)):
+        fail("First argument must be a list or tuple")
     def _block(dct):
-        if not isDict(dct): return []
+        if not is_dict(dct): return []
         return dct.get(key, default)
     return map(_block, col)
-
 
 def pick(dct, *keys):
     """ Returns a copy of the dictionary filtered to only have values for the
@@ -167,7 +219,6 @@ def pick(dct, *keys):
         if key in dct.keys(): copy[key] = dct[key]
     return copy
 
-
 def omit(dct, *keys):
     """ Returns a copy of the dictionary filtered to omit the blacklisted keys
         (or list of keys)
@@ -179,7 +230,6 @@ def omit(dct, *keys):
     for key in dct:
         if key not in keys: copy[key] = dct[key]
     return copy
-
 
 def rename(dct, mapping):
     """ Rename the keys of a dictionary with the given mapping
@@ -196,7 +246,6 @@ def rename(dct, mapping):
             return memo
     return reduce(_block, mapping, omit(dct, *mapping.keys()))
 
-
 def alias(col, mapping):
     """ Returns a collection of dictionaries with the keys renamed according to
         the mapping
@@ -208,11 +257,10 @@ def alias(col, mapping):
         >>> alias({"a": 1}, {"a": "b"})
         [{'b': 1}]
     """
-    if not isList(col): col = [col]
+    if not is_list(col): col = [col]
     def _block(dct):
         return rename(dct, mapping)
     return map(_block, col)
-
 
 def first(lst, n=None):
     """ get the first element of a list
@@ -223,7 +271,7 @@ def first(lst, n=None):
         >>> first(lst, 3)
         [1, 2, 3]
     """
-    if not isList(lst): return None
+    if not is_list(lst): return None
     return n is None and lst[0] or lst[0:n]
 
 
