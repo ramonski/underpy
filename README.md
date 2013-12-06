@@ -13,3 +13,9 @@
 Functional (Underscore.js like) Library for Python
 ```
 
+
+## Running the tests
+
+```
+python setup.py nosetests --with-doctest
+```
