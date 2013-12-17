@@ -23,7 +23,6 @@ setup(
     test_suite='nose.collector',
     packages=find_packages('src'),
     package_dir = {'': 'src'},
-    namespace_packages=['underpy'],
     include_package_data=True,
     zip_safe=False,
     classifiers = [
