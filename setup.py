@@ -12,7 +12,6 @@ long_description = read('README.md')
 setup(
     name='underpy',
     version='0.1',
-    py_modules=['underpy'],
     url='https://github.com/ramonski/underpy',
     license='MIT',
     author='Ramon Bartl',
@@ -22,6 +21,8 @@ setup(
     long_description=long_description,
     platforms='any',
     test_suite='nose.collector',
+    packages=['underpy'],
+    package_dir={'underpy': 'src'},
     classifiers = [
         'Programming Language :: Python :: 2 :: Only',
         'Development Status :: 1 - Beta',
