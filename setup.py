@@ -1,4 +1,4 @@
-from setuptools import setup
+from setuptools import setup, find_packages
 import codecs
 import os
 
@@ -21,8 +21,11 @@ setup(
     long_description=long_description,
     platforms='any',
     test_suite='nose.collector',
-    packages=['underpy'],
-    package_dir={'underpy': 'src'},
+    packages=find_packages('src'),
+    package_dir = {'': 'src'},
+    namespace_packages=['underpy'],
+    include_package_data=True,
+    zip_safe=False,
     classifiers = [
         'Programming Language :: Python :: 2 :: Only',
         'Development Status :: 1 - Beta',
