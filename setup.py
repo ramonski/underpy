@@ -26,10 +26,7 @@ setup(
     include_package_data=True,
     zip_safe=False,
     classifiers = [
-        'Programming Language :: Python :: 2 :: Only',
-        'Development Status :: 1 - Beta',
-        'Natural Language :: English',
-        'Environment :: Console',
+        'Programming Language :: Python',
         'Intended Audience :: Developers',
         'Operating System :: OS Independent',
         'Topic :: Software Development :: Libraries :: Python Modules',
