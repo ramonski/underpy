@@ -4,6 +4,7 @@ __author__ = 'Ramon Bartl <ramon.bartl@googlemail.com>'
 __docformat__ = 'plaintext'
 
 import types
+import datetime
 
 
 def fail(error):
@@ -168,6 +169,21 @@ def to_list(thing):
     if not (is_list(thing) or is_tuple(thing)):
         return [thing]
     return list(thing)
+
+
+def to_iso_date(thing):
+    """ converts an object to a iso date string
+
+        >>> to_iso_date("")
+        ""
+        >>> dt = datetime.date.fromtimestamp(1387452665)
+        >>> to_iso_date(dt)
+        '2013-12-19'
+    """
+    if isinstance(thing, datetime.datetime):
+        return thing.isoformat()
+    return ""
+
 
 def convert(value, converter):
     """ Converts a value with a given converter function.
