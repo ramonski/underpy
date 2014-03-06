@@ -175,12 +175,12 @@ def to_iso_date(thing):
     """ converts an object to a iso date string
 
         >>> to_iso_date("")
-        ""
+        ''
         >>> dt = datetime.date.fromtimestamp(1387452665)
         >>> to_iso_date(dt)
         '2013-12-19'
     """
-    if isinstance(thing, datetime.datetime):
+    if isinstance(thing, (datetime.datetime, datetime.date)):
         return thing.isoformat()
     return ""
 
