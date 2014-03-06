@@ -204,6 +204,15 @@ to_string(thing)
     >>> to_string(u"a")
     'a'
 
+def to_iso_date(thing):
+    converts an object to a iso date string
+
+    >>> to_iso_date("")
+    ""
+    >>> dt = datetime.date.fromtimestamp(1387452665)
+    >>> to_iso_date(dt)
+    '2013-12-19'
+
 truthy(thing)
     checks if a value is True or not None
 
