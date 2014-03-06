@@ -11,7 +11,7 @@ long_description = read('README.md')
 
 setup(
     name='underpy',
-    version='0.2',
+    version='0.1.1',
     url='https://github.com/ramonski/underpy',
     license='MIT',
     author='Ramon Bartl',
